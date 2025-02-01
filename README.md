@@ -40,8 +40,7 @@ This is the backend for a bicycle e-commerce platform that allows users to custo
 ### **1️⃣ Clone the Repository**
 
 ```bash
-git clone https://github.com/yourusername/bicycle-shop-backend.git
-cd bicycle-shop-backend
+git clone https://github.com/Btojaka/bicycle-shop-backend.git
 ```
 
 ### **2️⃣ Install Dependencies**
@@ -212,8 +211,7 @@ Este es el backend para un ecommerce de bicicletas que permite a los usuarios pe
 ### **1️⃣ Clonar el repositorio**
 
 ```bash
-git clone https://github.com/tuusuario/bicycle-shop-backend.git
-cd bicycle-shop-backend
+git clone https://github.com/Btojaka/bicycle-shop-backend.git
 ```
 
 ### **2️⃣ Instalar dependencias**
