@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+        "outDir": "./dist",
+        "rootDir": "./src",
+        "lib": ["esnext", "dom"],  // Added "dom" to the lib array to fix the error "Cannot find name 'Element'. Do you need to change your target library? Try changing the `lib` compiler option to include 'dom'." when importing Element from 'react'
+        "target": "ESNext",
+        "moduleResolution": "nodenext",
+        "module": "NodeNext",
+        "strict": false,
+        "sourceMap": true,
+        "esModuleInterop": true,
+        "declaration": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+    },
+  "include": ["src/**/*.ts"],         // Include typescript files to compile
+  "exclude": ["node_modules" , "dist"]  // Exclude node_modules and dist folders
+}
