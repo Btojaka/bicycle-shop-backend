@@ -7,6 +7,8 @@ import express from "express";
 import dotenv from "dotenv";
 import db from "./config/database";
 import routes from "./routes";
+import swaggerUi from "swagger-ui-express";
+import swaggerSpec, { swaggerUiOptions } from "./config/swagger";
 
 /**
  * Connects to the database and synchronizes all models.
@@ -43,5 +45,12 @@ server.use(express.json());
 
 // Configure the server to use the routes
 server.use("/api", routes);
+
+// Docs
+server.use(
+  "/docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerSpec, swaggerUiOptions)
+);
 
 export default server;
