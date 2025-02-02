@@ -4,6 +4,8 @@
  */
 
 import express from "express";
+import morgan from "morgan";
+import cors, { CorsOptions } from "cors";
 import dotenv from "dotenv";
 import db from "./config/database";
 import routes from "./routes";
@@ -38,15 +40,35 @@ export async function connectDB() {
 // Call the function to connect to the database
 connectDB();
 
+// instantiate the server
 const server = express();
+
+// allow connections from the frontend
+const corsOptions: CorsOptions = {
+  origin: function (origin, callback) {
+    console.log(origin);
+    if (origin === process.env.FRONTEND_URL) {
+      console.log("Connecion Allowed...");
+      callback(null, true);
+    } else {
+      console.log("Connecion rejected");
+      callback(new Error("CORS error"), false);
+    }
+  },
+};
+
+server.use(cors(corsOptions));
 
 // Middleware to process JSON data
 server.use(express.json());
 
+// Middleware to log requests to the console
+server.use(morgan("dev"));
+
 // Configure the server to use the routes
 server.use("/api", routes);
 
-// Docs
+// API Docs
 server.use(
   "/docs",
   swaggerUi.serve,
