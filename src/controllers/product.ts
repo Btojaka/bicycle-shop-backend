@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import Product from "../models/Product.model";
+import { io } from "../server";
 
 // List all products (optional filter by type)
 export const getProducts = async (
@@ -7,13 +8,10 @@ export const getProducts = async (
   res: Response
 ): Promise<void> => {
   try {
-    const { type } = req.query; // Optional filter by product type
+    const { type } = req.query;
+    const whereCondition = type ? { type } : {};
 
-    const whereCondition = type ? { type } : {}; // Apply filter if provided
-
-    const products = await Product.findAll({
-      where: whereCondition,
-    });
+    const products = await Product.findAll({ where: whereCondition });
 
     if (products.length === 0) {
       res.status(200).json({ message: "No products available at the moment." });
@@ -31,10 +29,14 @@ export const createProduct = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const { name, price, type = "bicycle" } = req.body; // Default type to "bicycle" if not provided
+  const { name, price, type = "bicycle" } = req.body;
+
   try {
     const product = await Product.create({ name, price, type });
     console.log("Created Product:", product.toJSON());
+
+    // Emitir evento al frontend
+    io.emit("productCreated", product);
 
     res.status(201).json({ data: product });
   } catch (error) {
@@ -66,31 +68,28 @@ export const updateProduct = async (
   res: Response
 ): Promise<void> => {
   const { id } = req.params;
-  let { name, price, type } = req.body;
+  let { name, price, type, isAvailable } = req.body;
 
   try {
     const product = await Product.findByPk(id);
-    // Check if the product exists
     if (!product) {
       res.status(404).json({ error: "Product Not Found" });
       return;
     }
 
-    // `PUT` requires sending ALL mandatory fields
     if (!name || !price) {
-      res.status(400).json({
-        error:
-          "PUT requires all fields (name, price)  field 'type' is by default is bicycle, to be sent",
-      });
+      res.status(400).json({ error: "PUT requires all fields (name, price)" });
       return;
     }
 
-    // Parse price to float if provided and validate it
     if (price) {
       price = parseFloat(price);
     }
 
-    await product.update({ name, price, type });
+    await product.update({ name, price, type, isAvailable });
+
+    // Emitir evento al frontend
+    io.emit("productUpdated", product);
 
     res.status(200).json(product);
   } catch (error) {
@@ -104,24 +103,24 @@ export const partialUpdateProduct = async (
   res: Response
 ): Promise<void> => {
   const { id } = req.params;
-  let { name, price, type, isAvailable } = req.body; // Extract fields to update
+  let { name, price, type, isAvailable } = req.body;
 
   try {
     const existingProduct = await Product.findByPk(id);
 
-    // check if the product exists
     if (!existingProduct) {
       res.status(404).json({ error: "Product Not Found" });
       return;
     }
 
-    // Parse price to float if provided
     if (price) {
       price = parseFloat(price);
     }
 
-    // Partial update of the product
     await existingProduct.update({ name, price, type, isAvailable });
+
+    // Emitir evento al frontend
+    io.emit("productUpdated", existingProduct);
 
     res.status(200).json(existingProduct);
   } catch (error) {
@@ -136,12 +135,19 @@ export const deleteProduct = async (
 ): Promise<void> => {
   const { id } = req.params;
   try {
-    const deleted = await Product.destroy({ where: { id } });
-    if (deleted) {
-      res.status(200).json({ message: "Product successfully deleted" });
-    } else {
+    const deletedProduct = await Product.findByPk(id);
+
+    if (!deletedProduct) {
       res.status(404).json({ error: "Product Not Found" });
+      return;
     }
+
+    await deletedProduct.destroy();
+
+    // Emitir evento al frontend
+    io.emit("productDeleted", { id });
+
+    res.status(200).json({ message: "Product successfully deleted" });
   } catch (error) {
     res.status(500).json({ error: "Error deleting product" });
   }

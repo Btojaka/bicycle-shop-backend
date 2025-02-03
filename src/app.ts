@@ -23,7 +23,7 @@
  * @param {number|string} PORT - The port number or string on which the server will listen.
  * @param {Function} callback - A callback function that logs a message to the console.
  */
-import server from "./server";
+import { server } from "./server";
 
 const PORT = process.env.PORT || 4000;
 

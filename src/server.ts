@@ -11,6 +11,8 @@ import db from "./config/database";
 import routes from "./routes";
 import swaggerUi from "swagger-ui-express";
 import swaggerSpec, { swaggerUiOptions } from "./config/swagger";
+import { createServer } from "http";
+import { Server } from "socket.io";
 
 /**
  * Connects to the database and synchronizes all models.
@@ -40,10 +42,11 @@ export async function connectDB() {
 // Call the function to connect to the database
 connectDB();
 
-// instantiate the server
+// Instantiate the Express server
 const server = express();
+const httpServer = createServer(server); // Create HTTP server for WebSockets
 
-// allow connections from the frontend
+// Allow connections from the frontend
 const corsOptions: CorsOptions = {
   origin: function (origin, callback) {
     console.log(origin);
@@ -75,4 +78,20 @@ server.use(
   swaggerUi.setup(swaggerSpec, swaggerUiOptions)
 );
 
-export default server;
+// WebSocket setup with CORS (only frontend URL allowed)
+const io = new Server(httpServer, {
+  cors: {
+    origin: process.env.FRONTEND_URL, // Matches the CORS settings in Express
+    methods: ["GET", "POST"],
+  },
+});
+
+io.on("connection", (socket) => {
+  console.log("New WebSocket connection:", socket.id);
+
+  socket.on("disconnect", () => {
+    console.log("WebSocket disconnected:", socket.id);
+  });
+});
+
+export { io, httpServer, server };
