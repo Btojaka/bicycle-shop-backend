@@ -82,7 +82,7 @@ server.use(
 const io = new Server(httpServer, {
   cors: {
     origin: process.env.FRONTEND_URL, // Matches the CORS settings in Express
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
   },
 });
 

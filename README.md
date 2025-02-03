@@ -105,6 +105,25 @@ To prevent customers from purchasing out-of-stock products, the backend **automa
 - **Advantage**: Allows pre-configuring models without stock without deleting them.
 - **Disadvantage**: Requires additional logic to dynamically update `isAvailable`.
 
+## 5️⃣ 📡 WebSockets & Real-Time Updates
+
+The backend of the application uses **WebSockets** via `socket.io` to provide **real-time product updates** without requiring manual page reloads.
+
+### 🔄 **Handling Product Changes**
+
+Whenever a product is **created, updated, or deleted**, the backend **emits WebSocket events** to automatically update the product list on the frontend. The same applies to parts, where events have also been created to update the lists and products as needed.
+
+- **`productCreated`** → If a new product is created with `isAvailable: true`, it is automatically added to the displayed product list.
+- **`productUpdated`** → If a product changes:
+  - If its availability (`isAvailable`) changes to `false`, it is removed from the list.
+  - If its name, price, or type changes, it is updated in the list.
+  - If it was previously unavailable and now `true`, it is added to the list.
+- **`productDeleted`** → If a product is deleted, it disappears from the list in real time.
+
+### ⚙️ **CORS and WebSockets Configuration in the Backend**
+
+To enable communication between the frontend and backend, **CORS** has been configured to accept connections from the frontend domain specified in the environment variables:
+
 ---
 
 ## 🌐 API Endpoints
@@ -275,6 +294,25 @@ Para evitar que los clientes compren productos sin stock, el backend **marca aut
 
 - **Ventaja**: Permite preconfigurar modelos sin stock sin eliminarlos.
 - **Desventaja**: Necesita una lógica adicional para actualizar dinámicamente `isAvailable`.
+
+## 5️⃣ 📡 WebSockets y Actualizaciones en tiempo real
+
+El backend de la aplicación utiliza **WebSockets** a través de `socket.io` para proporcionar **actualizaciones en tiempo real** de los productos sin necesidad de recargar la página manualmente.
+
+### 🔄 **Manejo de cambios en productos**
+
+Cada vez que un producto es **creado, actualizado o eliminado**, el backend **emite eventos WebSocket** para actualizar la lista de productos en el frontend automáticamente. Pasaría lo mismo con las partes donde también se han creado eventos para actualizar las listas y los productos segun sea necesario.
+
+- **`productCreated`** → Si un nuevo producto es creado con `isAvailable: true`, se agrega automáticamente a la lista de productos mostrados.
+- **`productUpdated`** → Si un producto cambia:
+  - Si su disponibilidad (`isAvailable`) pasa a `false`, se elimina de la lista.
+  - Si cambia su nombre, precio o tipo, se actualiza en la lista.
+  - Si antes no estaba disponible y ahora es `true`, se agrega a la lista.
+- **`productDeleted`** → Si un producto es eliminado, desaparece de la lista en tiempo real.
+
+### ⚙️ **Configuración de CORS y WebSockets en el Backend**
+
+Para permitir la comunicación entre el frontend y el backend, se ha configurado **CORS** para aceptar conexiones desde el dominio del frontend especificado en las variables de entorno:
 
 ---
 
