@@ -47,7 +47,7 @@ const server = express();
 const corsOptions: CorsOptions = {
   origin: function (origin, callback) {
     console.log(origin);
-    if (origin === process.env.FRONTEND_URL) {
+    if (!origin || origin === process.env.FRONTEND_URL) {
       console.log("Connecion Allowed...");
       callback(null, true);
     } else {
