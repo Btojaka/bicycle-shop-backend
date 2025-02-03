@@ -23,10 +23,10 @@
  * @param {number|string} PORT - The port number or string on which the server will listen.
  * @param {Function} callback - A callback function that logs a message to the console.
  */
-import { server } from "./server";
+import { httpServer } from "./server"; // Usa httpServer en lugar de server
 
 const PORT = process.env.PORT || 4000;
 
-server.listen(PORT, () => {
+httpServer.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });
