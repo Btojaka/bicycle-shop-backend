@@ -2,8 +2,9 @@ import { Request, Response } from "express";
 import CustomProduct from "../models/CustomProduct.model";
 import Part from "../models/Part.model";
 import { validateDynamicRestrictions } from "../helpers";
+import { io } from "../server"; // Importamos el socket desde el servidor
 
-// 📌 List all custom products
+// List all custom products
 export const getCustomProducts = async (
   req: Request,
   res: Response
@@ -71,8 +72,12 @@ export const createCustomProduct = async (
     if (validParts.length > 0) {
       await customProduct.$set("parts", validParts);
     }
+    const fullProduct = await CustomProduct.findByPk(customProduct.id, {
+      include: Part,
+    });
 
-    res.status(201).json(customProduct);
+    io.emit("customProductCreated", fullProduct);
+    res.status(201).json(fullProduct);
   } catch (error) {
     res.status(500).json({ error: "Error creating custom product" });
   }
@@ -151,7 +156,10 @@ export const updateCustomProduct = async (
       ...(typeProduct && { typeProduct }),
     });
 
-    res.status(200).json(customProduct);
+    const updatedProduct = await CustomProduct.findByPk(id, { include: Part });
+
+    io.emit("customProductUpdated", updatedProduct);
+    res.status(200).json(updatedProduct);
   } catch (error) {
     res.status(500).json({ error: "Error updating custom product" });
   }
@@ -217,7 +225,6 @@ export const updateCustomProductParts = async (
 
     // Associate the parts with the custom product
     await customProduct.$set("parts", validParts);
-
     res.status(200).json({
       message: "Custom product parts updated successfully.",
       updatedCustomProduct: await CustomProduct.findByPk(id, { include: Part }),
@@ -238,6 +245,7 @@ export const deleteCustomProduct = async (
 
     // Check if the custom product was deleted
     if (deleted) {
+      io.emit("customProductDeleted", { id });
       res.status(204).send({ message: "Custom product successfully deleted" });
     } else {
       res.status(404).json({ error: "Custom Product Not Found" });
