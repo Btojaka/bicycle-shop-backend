@@ -22,7 +22,7 @@ export default class Part extends Model {
 
   @Column({
     type: DataType.STRING,
-    allowNull: false, // Example: "frameType", "wheels"
+    allowNull: false, // Example: "Frame Type", "Wheels"
   })
   declare category: string;
 

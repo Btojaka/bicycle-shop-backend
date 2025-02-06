@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import Part from "../models/Part.model";
-import Product from "../models/Product.model";
+import { io } from "../server";
 
 // List all parts (optionally filter by typeProduct)
 export const getParts = async (req: Request, res: Response): Promise<void> => {
@@ -53,6 +53,7 @@ export const createPart = async (
       typeProduct,
       quantity,
     });
+    io.emit("partCreated", part);
     res.status(201).json(part);
   } catch (error) {
     res.status(500).json({ error: "Error creating part" });
@@ -109,7 +110,7 @@ export const updatePart = async (
     if (quantity !== undefined && quantity <= 0) {
       await part.update({ isAvailable: false });
     }
-
+    io.emit("partUpdated", part);
     res.status(200).json(await Part.findByPk(id));
   } catch (error) {
     res.status(500).json({ error: "Error updating part" });
@@ -147,7 +148,7 @@ export const partialUpdatePart = async (
     if (quantity !== undefined && quantity <= 0) {
       await existingPart.update({ isAvailable: false });
     }
-
+    io.emit("partUpdated", existingPart);
     res.status(200).json(await Part.findByPk(id));
   } catch (error) {
     res.status(500).json({ error: "Error updating part partially" });
@@ -172,6 +173,7 @@ export const deletePart = async (
     // Delete the part
     await part.destroy();
 
+    io.emit("partDeleted", { id });
     res.status(200).json({ message: "Part deleted successfully" });
   } catch (error) {
     res.status(500).json({ error: "Error deleting part" });

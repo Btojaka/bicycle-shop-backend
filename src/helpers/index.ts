@@ -47,9 +47,9 @@ export const validateDynamicRestrictions = async (
 
   // Validation 2: Specific product rules
   if (
-    newPart?.category === "wheels" &&
+    newPart?.category === "Wheels" &&
     newPart.value === "mountain wheels" &&
-    partsByCategory["frameType"] !== "full-suspension"
+    partsByCategory["Frame Type"] !== "full-suspension"
   ) {
     return "Mountain wheels require a full-suspension frame.";
   }
@@ -57,7 +57,7 @@ export const validateDynamicRestrictions = async (
   if (
     newPart?.category === "rimColor" &&
     newPart.value === "red" &&
-    partsByCategory["wheels"] === "fat bike wheels"
+    partsByCategory["Wheels"] === "fat bike wheels"
   ) {
     return "Fat bike wheels cannot have a red rim color.";
   }

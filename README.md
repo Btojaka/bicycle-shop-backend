@@ -365,9 +365,9 @@ POST /api/custom-products
   "price": 1200.5,
   "typeProduct": "bicycle",
   "parts": [
-    { "id": 1, "category": "frame", "value": "aluminum" },
-    { "id": 2, "category": "wheels", "value": "mountain wheels" },
-    { "id": 3, "category": "brakes", "value": "hydraulic disc" }
+    { "id": 1, "category": "Frame", "value": "aluminum" },
+    { "id": 2, "category": "Wheels", "value": "mountain wheels" },
+    { "id": 3, "category": "Brakes", "value": "hydraulic disc" }
   ]
 }
 ```

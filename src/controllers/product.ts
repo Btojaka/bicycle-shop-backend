@@ -90,7 +90,7 @@ export const updateProduct = async (
 
     // Emitir evento al frontend
     io.emit("productUpdated", product);
-
+    console.log("Updated Product:", product.toJSON());
     res.status(200).json(product);
   } catch (error) {
     res.status(500).json({ error: "Error updating product" });
