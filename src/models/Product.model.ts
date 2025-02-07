@@ -29,4 +29,11 @@ export default class Product extends Model {
     allowNull: false, // Defines whether the product is available for sale
   })
   declare isAvailable: boolean;
+
+  @Default(null)
+  @Column({
+    type: DataType.JSON,
+    allowNull: true, // It can be null if no restrictions are applied
+  })
+  declare restrictions?: { [category: string]: string[] } | null;
 }

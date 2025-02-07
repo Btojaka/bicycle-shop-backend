@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import CustomProduct from "../models/CustomProduct.model";
 import Part from "../models/Part.model";
 import { validateDynamicRestrictions } from "../helpers";
-import { io } from "../server"; // Importamos el socket desde el servidor
+import { io } from "../server";
 
 // List all custom products
 export const getCustomProducts = async (
@@ -171,7 +171,7 @@ export const updateCustomProductParts = async (
   res: Response
 ): Promise<void> => {
   const { id } = req.params;
-  const { parts } = req.body; // Nueva lista de partes a asociar
+  const { parts } = req.body; // New list of parts to associate
 
   try {
     const customProduct = await CustomProduct.findByPk(id, { include: Part });

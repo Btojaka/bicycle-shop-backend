@@ -18,6 +18,37 @@ export const getParts = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
+// get all categories values and typeproduct
+export const getPartOptions = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const parts = await Part.findAll({
+      attributes: ["category", "value", "typeProduct"],
+    });
+
+    const options: { [typeProduct: string]: { [category: string]: string[] } } =
+      {};
+
+    parts.forEach((part) => {
+      if (!options[part.typeProduct]) {
+        options[part.typeProduct] = {};
+      }
+      if (!options[part.typeProduct][part.category]) {
+        options[part.typeProduct][part.category] = [];
+      }
+      if (!options[part.typeProduct][part.category].includes(part.value)) {
+        options[part.typeProduct][part.category].push(part.value);
+      }
+    });
+
+    res.status(200).json(options);
+  } catch (error) {
+    res.status(500).json({ error: "Error fetching part options" });
+  }
+};
+
 // Create a new part
 export const createPart = async (
   req: Request,

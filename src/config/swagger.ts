@@ -26,11 +26,6 @@ const options: swaggerJSDoc.Options = {
 const swaggerSpec = swaggerJSDoc(options);
 
 const swaggerUiOptions: SwaggerUiOptions = {
-  //   customCss: `
-  //         .topbar-wrapper .link {
-  //             display: none !important; // Hide the Swagger logo
-  //         }
-  //     `,
   customSiteTitle: "Documentation REST API Bicycle Shop",
 };
 export default swaggerSpec;

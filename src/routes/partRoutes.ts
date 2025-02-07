@@ -2,6 +2,7 @@ import { Router } from "express";
 import { param, body } from "express-validator";
 import {
   getParts,
+  getPartOptions,
   createPart,
   getPartById,
   updatePart,
@@ -14,6 +15,9 @@ const router = Router();
 
 // GET /api/parts - List all parts
 router.get("/", getParts);
+
+// GET /api/parts/options - Get available part options by typeProduct
+router.get("/options", getPartOptions);
 
 // POST /api/parts - Create a new part
 router.post(
@@ -143,6 +147,32 @@ export default router;
  *               $ref: '#/components/schemas/Part'
  *       400:
  *         description: Invalid input
+ */
+
+/**
+ * @swagger
+ * /api/parts/options:
+ *   get:
+ *     summary: Get available part options grouped by typeProduct
+ *     tags: [Parts]
+ *     description: Returns available part categories and values grouped by the type of product.
+ *     responses:
+ *       200:
+ *         description: List of available options by product type
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               example:
+ *                 bicycle:
+ *                   Frame Type: ["full-suspension", "hardtail"]
+ *                   Wheels: ["mountain wheels", "road wheels"]
+ *                   Rim Color: ["red", "black", "blue"]
+ *                 ski:
+ *                   Ski Type: ["alpine", "freestyle"]
+ *                   Length: ["160cm", "180cm", "200cm"]
+ *       500:
+ *         description: Error fetching part options
  */
 
 /**

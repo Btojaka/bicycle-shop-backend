@@ -29,13 +29,19 @@ export const createProduct = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const { name, price, type = "bicycle" } = req.body;
+  const { name, price, type = "bicycle", restrictions, isAvailable } = req.body;
 
   try {
-    const product = await Product.create({ name, price, type });
+    const product = await Product.create({
+      name,
+      price,
+      type,
+      restrictions,
+      isAvailable,
+    });
     console.log("Created Product:", product.toJSON());
 
-    // Emitir evento al frontend
+    // Emit event to frontend
     io.emit("productCreated", product);
 
     res.status(201).json({ data: product });
@@ -68,7 +74,7 @@ export const updateProduct = async (
   res: Response
 ): Promise<void> => {
   const { id } = req.params;
-  let { name, price, type, isAvailable } = req.body;
+  let { name, price, type, isAvailable, restrictions } = req.body;
 
   try {
     const product = await Product.findByPk(id);
@@ -86,9 +92,9 @@ export const updateProduct = async (
       price = parseFloat(price);
     }
 
-    await product.update({ name, price, type, isAvailable });
+    await product.update({ name, price, type, isAvailable, restrictions });
 
-    // Emitir evento al frontend
+    // Emit event to frontend
     io.emit("productUpdated", product);
     console.log("Updated Product:", product.toJSON());
     res.status(200).json(product);
@@ -103,7 +109,7 @@ export const partialUpdateProduct = async (
   res: Response
 ): Promise<void> => {
   const { id } = req.params;
-  let { name, price, type, isAvailable } = req.body;
+  let { name, price, type, isAvailable, restrictions } = req.body;
 
   try {
     const existingProduct = await Product.findByPk(id);
@@ -117,9 +123,15 @@ export const partialUpdateProduct = async (
       price = parseFloat(price);
     }
 
-    await existingProduct.update({ name, price, type, isAvailable });
+    await existingProduct.update({
+      name,
+      price,
+      type,
+      isAvailable,
+      restrictions,
+    });
 
-    // Emitir evento al frontend
+    // Emit event to frontend
     io.emit("productUpdated", existingProduct);
 
     res.status(200).json(existingProduct);
@@ -144,7 +156,7 @@ export const deleteProduct = async (
 
     await deletedProduct.destroy();
 
-    // Emitir evento al frontend
+    // Emit event to frontend
     io.emit("productDeleted", { id });
 
     res.status(200).json({ message: "Product successfully deleted" });

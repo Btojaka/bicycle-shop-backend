@@ -22,6 +22,10 @@ router.post(
   body("price")
     .isFloat({ min: 0 })
     .withMessage("Price must be a positive float"),
+  body("restrictions")
+    .optional()
+    .isObject()
+    .withMessage("Restrictions must be an object"),
   handleInputErrors,
   createProduct
 );
@@ -48,6 +52,10 @@ router.put(
   body("price")
     .isFloat({ min: 0 })
     .withMessage("Price must be a positive float"),
+  body("restrictions")
+    .optional()
+    .isObject()
+    .withMessage("Restrictions must be an object"),
   handleInputErrors,
   updateProduct
 );
@@ -62,6 +70,10 @@ router.patch(
     .optional()
     .isFloat({ min: 0 })
     .withMessage("Price must be a positive float"),
+  body("restrictions")
+    .optional()
+    .isObject()
+    .withMessage("Restrictions must be an object"),
   handleInputErrors,
   partialUpdateProduct
 );
@@ -105,6 +117,10 @@ export default router;
  *                      type: string
  *                      description: The Product Type
  *                      example: bicycle
+ *                  restrictions:
+ *                      type: object
+ *                      description: Product customization restrictions
+ *                      example: { "Wheels": ["mountain wheels"], "Frame Type": ["full-suspension"] }
  */
 
 /**
