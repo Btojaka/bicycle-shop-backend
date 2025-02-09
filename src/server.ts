@@ -29,7 +29,7 @@ dotenv.config(); // Upload environment variables
 export async function connectDB() {
   try {
     await db.authenticate();
-    // await db.sync({ alter: true }); // Sync all models with the database in development
+    // await db.sync({ alter: true });
     await db.sync(); // Sync all models with the database in development
     return true;
     // console.log(
