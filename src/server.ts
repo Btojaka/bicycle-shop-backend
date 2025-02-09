@@ -50,16 +50,12 @@ const httpServer = createServer(server); // Create HTTP server for WebSockets
 
 // Allow connections from the frontend
 const corsOptions: CorsOptions = {
-  origin: function (origin, callback) {
-    // console.log(origin);
-    if (!origin || origin === process.env.FRONTEND_URL) {
-      // console.log("Connecion Allowed...");
-      callback(null, true);
-    } else {
-      // console.log("Connecion rejected");
-      callback(new Error("CORS error"), false);
-    }
-  },
+  origin: [
+    "https://btojaka.github.io/bicycle-shop-frontend", // Agrega la URL completa de GitHub Pages
+    "http://localhost:5173", // Para desarrollo local con Vite
+  ],
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true, // Habilita cookies o autenticación si es necesario
 };
 
 server.use(cors(corsOptions));
@@ -83,7 +79,10 @@ server.use(
 // WebSocket setup with CORS (only frontend URL allowed)
 const io = new Server(httpServer, {
   cors: {
-    origin: process.env.FRONTEND_URL, // Matches the CORS settings in Express
+    origin: [
+      "https://btojaka.github.io/bicycle-shop-frontend",
+      "http://localhost:5173",
+    ],
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
   },
 });
