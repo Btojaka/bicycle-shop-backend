@@ -17,7 +17,8 @@ dotenv.config(); // Load environment variables
  *
  * @module config/database
  */
-const db = new Sequelize(process.env.DATABASE_URL!, {
+const DATABASE_URL = process.env.DATABASE_URL;
+const db = new Sequelize(DATABASE_URL!, {
   dialect: "postgres",
   models: models, // Automatic loading of TypeScript models
   logging: false, // Optional: deactivate logs from Sequelize in the console
