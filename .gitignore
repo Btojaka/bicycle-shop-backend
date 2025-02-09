@@ -2,7 +2,7 @@
 node_modules/
 dist/
 
-# Variables de entorno
+# Environment variables
 .env
 
 # Logs
@@ -12,3 +12,14 @@ yarn-error.log*
 
 # Editor directories and files
 .DS_Store
+.vscode/
+
+# Test coverage
+coverage/
+
+# Jest files
+jest.config.js
+jest.config.ts
+jest.setup.js
+jest.setup.ts
+

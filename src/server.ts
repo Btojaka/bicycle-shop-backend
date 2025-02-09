@@ -29,13 +29,15 @@ dotenv.config(); // Upload environment variables
 export async function connectDB() {
   try {
     await db.authenticate();
-    await db.sync({ alter: true }); // Sync all models with the database in development
-    console.log(
-      "Connection to the database has been established successfully."
-    );
+    // await db.sync({ alter: true }); // Sync all models with the database in development
+    await db.sync(); // Sync all models with the database in development
+    return true;
+    // console.log(
+    //   "Connection to the database has been established successfully."
+    // );
   } catch (error) {
-    console.error("Connection to the database failed:", error);
-    process.exit(1); // Stop the server
+    console.log("Unable to connect to the database");
+    return false;
   }
 }
 
@@ -49,12 +51,12 @@ const httpServer = createServer(server); // Create HTTP server for WebSockets
 // Allow connections from the frontend
 const corsOptions: CorsOptions = {
   origin: function (origin, callback) {
-    console.log(origin);
+    // console.log(origin);
     if (!origin || origin === process.env.FRONTEND_URL) {
-      console.log("Connecion Allowed...");
+      // console.log("Connecion Allowed...");
       callback(null, true);
     } else {
-      console.log("Connecion rejected");
+      // console.log("Connecion rejected");
       callback(new Error("CORS error"), false);
     }
   },

@@ -20,8 +20,10 @@ router.post(
   "/",
   body("name").notEmpty().withMessage("Name is required"),
   body("price")
-    .isFloat({ min: 0 })
-    .withMessage("Price must be a positive float"),
+    .notEmpty()
+    .withMessage("Price is required")
+    .isFloat({ min: 0.1 })
+    .withMessage("Price must be greater than 0 (ex: 0.50)"),
   body("restrictions")
     .optional()
     .isObject()
@@ -33,7 +35,7 @@ router.post(
 // GET /api/products/:id - Get details of a specific product
 router.get(
   "/:id",
-  param("id").isInt({ min: 1 }).withMessage("ID must be possitive integer"),
+  param("id").isInt({ min: 1 }).withMessage("ID must be positive integer"),
   handleInputErrors,
   getProductById
 );
@@ -41,7 +43,7 @@ router.get(
 // PUT /api/products/:id - Update a specific product completely
 router.put(
   "/:id",
-  param("id").isInt(),
+  param("id").isInt({ min: 1 }).withMessage("ID must be positive integer"),
   body("type").optional().isString().default("bicycle"),
   body("name")
     .notEmpty()
@@ -63,7 +65,7 @@ router.put(
 // PATCH /api/products/:id - Update a specific product partially
 router.patch(
   "/:id",
-  param("id").isInt(),
+  param("id").isInt({ min: 1 }).withMessage("ID must be positive integer"),
   body("type").optional().isString().default("bicycle"),
   body("name").optional().isString().withMessage("Name is String"),
   body("price")
@@ -79,7 +81,12 @@ router.patch(
 );
 
 // DELETE /api/products/:id - Delete a specific product
-router.delete("/:id", param("id").isInt(), handleInputErrors, deleteProduct);
+router.delete(
+  "/:id",
+  param("id").isInt({ min: 1 }).withMessage("ID must be positive integer"),
+  handleInputErrors,
+  deleteProduct
+);
 
 export default router;
 

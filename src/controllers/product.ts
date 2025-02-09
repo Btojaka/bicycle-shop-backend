@@ -39,7 +39,7 @@ export const createProduct = async (
       restrictions,
       isAvailable,
     });
-    console.log("Created Product:", product.toJSON());
+    // console.log("Created Product:", product.toJSON());
 
     // Emit event to frontend
     io.emit("productCreated", product);
@@ -96,7 +96,7 @@ export const updateProduct = async (
 
     // Emit event to frontend
     io.emit("productUpdated", product);
-    console.log("Updated Product:", product.toJSON());
+    // console.log("Updated Product:", product.toJSON());
     res.status(200).json(product);
   } catch (error) {
     res.status(500).json({ error: "Error updating product" });

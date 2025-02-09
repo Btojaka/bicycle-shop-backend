@@ -1,5 +1,6 @@
 import { Sequelize } from "sequelize-typescript";
 import dotenv from "dotenv";
+import { models } from "../models"; // Importa todos los modelos
 
 dotenv.config(); // Load environment variables
 
@@ -18,7 +19,7 @@ dotenv.config(); // Load environment variables
  */
 const db = new Sequelize(process.env.DATABASE_URL!, {
   dialect: "postgres",
-  models: [__dirname + "/../models/**/*.ts"], // Automatic loading of TypeScript models
+  models: models, // Automatic loading of TypeScript models
   logging: false, // Optional: deactivate logs from Sequelize in the console
   dialectOptions: {
     ssl: {

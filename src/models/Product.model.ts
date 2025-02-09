@@ -3,7 +3,7 @@ import { Table, Column, Model, DataType, Default } from "sequelize-typescript";
 @Table({
   tableName: "products",
 })
-export default class Product extends Model {
+class Product extends Model {
   @Default("bicycle")
   @Column({
     type: DataType.STRING,
@@ -37,3 +37,5 @@ export default class Product extends Model {
   })
   declare restrictions?: { [category: string]: string[] } | null;
 }
+
+export default Product;

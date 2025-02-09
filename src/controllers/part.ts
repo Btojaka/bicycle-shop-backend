@@ -18,7 +18,7 @@ export const getParts = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-// get all categories values and typeproduct
+// get all categories and values from typeproduct
 export const getPartOptions = async (
   req: Request,
   res: Response
@@ -27,7 +27,7 @@ export const getPartOptions = async (
     const parts = await Part.findAll({
       attributes: ["category", "value", "typeProduct"],
     });
-
+    //  Object from object, each product type is a key, maps to another object array with category key.
     const options: { [typeProduct: string]: { [category: string]: string[] } } =
       {};
 
