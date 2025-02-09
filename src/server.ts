@@ -48,13 +48,11 @@ connectDB();
 const server = express();
 const httpServer = createServer(server); // Create HTTP server for WebSockets
 
-const FRONTEND_URL = process.env.FRONTEND_URL;
-
 // Allow connections from the frontend
 const corsOptions: CorsOptions = {
   origin: function (origin, callback) {
     // console.log(origin);
-    if (!origin || origin === FRONTEND_URL) {
+    if (!origin || origin === process.env.FRONTEND_URL) {
       // console.log("Connecion Allowed...");
       callback(null, true);
     } else {
