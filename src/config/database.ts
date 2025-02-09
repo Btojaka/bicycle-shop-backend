@@ -17,6 +17,10 @@ dotenv.config(); // Load environment variables
  *
  * @module config/database
  */
+
+const DATABASE_URL =
+  "postgresql://postgres:dQBzoIofBVEtRSvFRFgaYqpmGsjIMmaL@autorack.proxy.rlwy.net:27709/railway";
+
 const db = new Sequelize(process.env.DATABASE_URL!, {
   dialect: "postgres",
   models: models, // Automatic loading of TypeScript models
