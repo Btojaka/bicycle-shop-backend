@@ -3,7 +3,6 @@ import dotenv from "dotenv";
 import { models } from "../models"; // Importa todos los modelos
 
 dotenv.config(); // Load environment variables
-
 /**
  * Initializes and configures the Sequelize instance for connecting to the PostgreSQL database.
  *
