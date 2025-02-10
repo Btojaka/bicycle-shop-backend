@@ -7,10 +7,10 @@ This is the backend for a bicycle e-commerce platform that allows users to custo
 ## 🛠 Technologies Used
 
 - **Backend**: Node.js, TypeScript, Express
-- **Database**: PostgreSQL (Railway), Sequelize (ORM)
+- **Database**: PostgreSQL (Render), Sequelize (ORM)
 - **Testing**: Jest, Supertest
 - **Documentation**: Swagger
-- **Additional Tools**: Railway, TablePlus, Code Coverage
+- **Additional Tools**: Render, TablePlus, Code Coverage
 
 ---
 
@@ -197,10 +197,10 @@ Este es el backend para un ecommerce de bicicletas que permite a los usuarios pe
 ## 🛠 Tecnologías utilizadas
 
 - **Backend**: Node.js, TypeScript, Express
-- **Base de datos**: PostgreSQL (Railway), Sequelize (ORM)
+- **Base de datos**: PostgreSQL (Render), Sequelize (ORM)
 - **Testing**: Jest, Supertest
 - **Documentación**: Swagger
-- **Herramientas adicionales**: Railway, TablePlus, Code Coverage
+- **Herramientas adicionales**: Render, TablePlus, Code Coverage
 
 ---
 
