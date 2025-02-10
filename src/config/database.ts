@@ -23,7 +23,7 @@ const db = new Sequelize(process.env.DATABASE_URL!, {
   logging: false, // Optional: deactivate logs from Sequelize in the console
   dialectOptions: {
     ssl: {
-      require: true, // Enable SSL for Railway
+      require: false, // Enable SSL for Railway not for Render
       rejectUnauthorized: false,
     },
   },
